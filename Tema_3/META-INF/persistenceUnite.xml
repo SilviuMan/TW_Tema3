@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+
+    <persistence-unit name="persistenceUnit">
+        <class>com.example.Tema_3.models.ResourcesEntity</class>
+        <class>com.example.Tema_3.models.ResourcesRightsRole</class>
+        <class>com.example.Tema_3.models.RolesUsers</class>
+        <class>com.example.Tema_3.models.ResourcesRole</class>
+        <class>com.example.Tema_3.models.RightsRoles</class>
+        <class>com.example.Tema_3.models.UserRole</class>
+        <class>com.example.Tema_3.models.UsersRoles</class>
+        <properties>
+            <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/tema3"/>
+            <property name="hibernate.connection.driver_class" value="com.mysql.cj.jdbc.Driver"/>
+        </properties>
+    </persistence-unit>
+</persistence>
