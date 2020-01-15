@@ -23,6 +23,10 @@
 	<div class="container my-2">
 		<div class="card">
 			<div class="card-body">
+				<div th:switch="${errorData}" class="container my-5">
+					<h2 th:case="null"></h2>
+					<h2 th:case="*" th:text="${errorData}"></h2>
+				</div>
 				<div th:switch="${roles}" class="container my-5">
 					<div class="col-md-10">
 						<h2 th:case="null">No record found !!</h2>
@@ -42,7 +46,7 @@
 									<td th:text="${rights.get((iter.count)-1)}"></td>
 									<td th:text="${resources.get((iter.count)-1)}"></td>
 									<td>
-										<a th:href="@{/delete/{id}/{id2}(id=${user.getId()},id2=${role.getId()})}" class="btn btn-primary">
+										<a th:href="@{/editResource/{id}/{id2}(id=${user.getId()},id2=${role.getId()})}" class="btn btn-primary">
 											<i class="fas fa-user-times ml-2"></i>
 										</a>
 									</td>

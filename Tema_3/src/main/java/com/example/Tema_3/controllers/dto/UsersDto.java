@@ -1,44 +1,31 @@
-package com.example.Tema_3.models;
+package com.example.Tema_3.controllers.dto;
 
+import com.example.Tema_3.models.Role;
+import com.example.Tema_3.models.Roles;
+import com.example.Tema_3.models.Users;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-@Entity
-@Table(name = "users")
-public class Users implements Serializable {
+public class UsersDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
     private String username;
 
-    @Column
     private String password;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "user_role",joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "role_id")} )
     private Set<Role> role = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "users_roles",
-            joinColumns = @JoinColumn(
-                    name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(
-                    name = "role_id", referencedColumnName = "id"))
     private Collection<Roles> roles;
 
-    public Users() {
+    public UsersDto() {
     }
 
-    public Users(Long id, String username, String password) {
+    public UsersDto(Long id, String username, String password) {
         this.id=id;
         this.username = username;
         this.password = password;
@@ -89,7 +76,7 @@ public class Users implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Users users = (Users) o;
+        UsersDto users = (UsersDto) o;
         return Objects.equals(id, users.id) &&
                 Objects.equals(username, users.username) &&
                 Objects.equals(password, users.password);

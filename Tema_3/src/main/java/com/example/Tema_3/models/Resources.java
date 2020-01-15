@@ -1,13 +1,15 @@
 package com.example.Tema_3.models;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import javax.persistence.Version;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name = "resources")
-public class Resources {
+public class Resources implements Serializable {
 
     @Id
     @GeneratedValue
@@ -20,6 +22,8 @@ public class Resources {
     @Column
     private String text;
 
+    @Version
+    private Long version;
 //    @ManyToMany(
 //            cascade = {CascadeType.PERSIST,
 //                    CascadeType.MERGE
@@ -75,6 +79,13 @@ public class Resources {
         this.text = text;
     }
 
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
 //    public Set<ResourcesRights> getRights() {
 //        return rights;
 //    }

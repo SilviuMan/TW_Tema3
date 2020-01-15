@@ -7,4 +7,5 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface ResourcesRepository extends CrudRepository<Resources, Long>, JpaRepository<Resources, Long> {
     Resources findResourcesById(Long id);
+    Resources findResourcesByName(String name);
 }

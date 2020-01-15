@@ -9,4 +9,5 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface RightsRepository extends CrudRepository<Rights, Long>, JpaRepository<Rights, Long> {
     Rights findRightsById(Long id);
+    Rights findRightsByName(String name);
 }

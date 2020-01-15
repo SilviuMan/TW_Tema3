@@ -40,7 +40,7 @@
             <div th:switch="${roles}" class="container my-5">
                 <p class="my-5">
                     <a th:href="@{/addRole/{id}(id=${user.getId()})}" class="btn btn-primary">
-                        <i class="fas fa-user-plus ml-2"> Add new Role </i></a>
+                        <i class="fas fa-user-plus ml-2"> Add new Role to user</i></a>
                 </p>
                 <div class="col-md-10">
                     <h2 th:case="null">No record found !!</h2>

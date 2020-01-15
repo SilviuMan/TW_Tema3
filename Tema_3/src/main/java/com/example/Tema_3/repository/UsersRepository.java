@@ -7,7 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-public interface UsersRepository extends CrudRepository<Users, Long>, JpaRepository<Users, Long> {
+public interface UsersRepository extends CrudRepository<Users, Long> {
 
     Users findUsersByUsername(String username);
     Users findUsersById(Long id);

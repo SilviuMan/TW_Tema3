@@ -39,6 +39,12 @@
     <div class="card">
         <div class="card-body">
     <div th:switch="${users}" class="container my-5">
+        <p class="my-5">
+            <a th:href="@{/addNewRole}" class="btn btn-primary">
+                <i class="fas fa-user-plus ml-2"> Add a new Role</i></a>
+            <a  th:href="@{/addNewResource}"  class="btn btn-primary">
+                <i class="fas fa-user-plus ml-2"> Add a new Resource</i></a>
+        </p>
         <div class="col-md-10">
             <h2 th:case="null">No record found !!</h2>
             <div th:case="*">

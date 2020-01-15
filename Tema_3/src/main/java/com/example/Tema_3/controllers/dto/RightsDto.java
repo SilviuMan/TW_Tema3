@@ -1,33 +1,23 @@
-package com.example.Tema_3.models;
+package com.example.Tema_3.controllers.dto;
 
-import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
-@Entity
-@Table(name = "rights")
-public class Rights {
+public class RightsDto {
 
-    @Id
-    @GeneratedValue
-    @Column(name = "rights_id")
     private Long id;
 
-    @Column
     private String name;
 
-
-//    private Set<ResourcesRights> rights = new HashSet<>();
-
-    public Rights() {
+    public RightsDto() {
     }
-    public Rights(Long id, String name) {
+    public RightsDto(Long id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public Rights( String name) {
+    public RightsDto( String name) {
         this.name = name;
     }
 

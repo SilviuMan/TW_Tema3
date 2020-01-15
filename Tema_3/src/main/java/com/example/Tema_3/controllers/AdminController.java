@@ -1,17 +1,17 @@
 package com.example.Tema_3.controllers;
 
-import com.example.Tema_3.models.Resources;
-import com.example.Tema_3.models.Rights;
-import com.example.Tema_3.models.Role;
-import com.example.Tema_3.models.Users;
+import com.example.Tema_3.controllers.dto.ResourcesDto;
+import com.example.Tema_3.controllers.dto.convertor.ResoucesConverter;
+import com.example.Tema_3.models.*;
 import com.example.Tema_3.repository.*;
 import com.example.Tema_3.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
+import java.io.IOException;
 import java.util.*;
 
 @Controller
@@ -31,6 +31,86 @@ public class AdminController {
     private RoleRepository roleRepository ;
     @Autowired
     private RightsRepository rightsRepository;
+
+    @ModelAttribute("multiCheckboxAllValues")
+    public String[] getMultiCheckboxAllValues() {
+        String[] rights = new String[4];
+        List<Rights> rightsList=rightsRepository.findAll();
+        for (int i=0;i<rightsList.size();i++){
+            rights[i]=rightsList.get(i).getName();
+        }
+        return rights;
+    }
+    @ModelAttribute("singleSelectAllValues")
+    public String[] getSingleSelectAllValues() {
+
+        List<Resources> rightsList=resourcesRepository.findAll();
+        String[] rights = new String[rightsList.size()];
+        for (int i=0;i<rightsList.size();i++){
+            rights[i]=rightsList.get(i).getName();
+        }
+        return rights;
+    }
+    @GetMapping("/addNewResource")
+    public String addNewResource(Model model) {
+        model.addAttribute("newResources",new ResourcesDto());
+        model.addAttribute("resources", new ResourcesDto());
+        return "addResource";
+    }
+    @GetMapping("/addNewRole")
+    public String addNewRole(Model model) {
+        model.addAttribute( "command", new FormCommand());
+        return "addNewRole";
+    }
+    @RequestMapping(value = "/addANewResource", method = RequestMethod.GET)
+    public ModelAndView getdataResource(Model model) throws IOException {
+        ModelAndView model3 = new ModelAndView("addANewResource");
+        model3.addObject("resources", new ResourcesDto());
+        return model3;
+       // model.addAttribute("newResources",new Resources());
+        //return "addResource";
+    }
+    @RequestMapping(value = "/addANewRole", method = RequestMethod.GET)
+    public String  getdataRole(Model model) throws IOException {
+        model.addAttribute( "command", new FormCommand());
+        return "addNewRole";
+        // model.addAttribute("newResources",new Resources());
+        //return "addResource";
+    }
+    @PostMapping(path = {"/addANewRole"})
+    public String addNewResource(Model model,@ModelAttribute("command") FormCommand command)
+    {
+        String[] strings=command.getMultiCheckboxSelectedValues();
+        Set<Rights> rights=new HashSet<>();
+        for (String st: strings
+             ) {
+            rights.add(rightsRepository.findRightsByName(st));
+        }
+        Set<Resources> resources=new HashSet<>();
+        resources.add(resourcesRepository.findResourcesByName(command.getRadioButtonSelectedValue()));
+        List<Role> roleList=roleRepository.findAll();
+        int nr=roleList.size()+1;
+        System.out.println(nr);
+        Role newRole=new Role((long) nr);
+        newRole.setRights(rights);
+        newRole.setResources(resources);
+        roleRepository.save(newRole);
+        //System.out.println(command.getMultiCheckboxSelectedValues());
+        List<Users> list = userService.findAll("ROLE_USER");
+        model.addAttribute("users", list);
+        return "adminPage";
+    }
+    @PostMapping(path = {"/addANewResource"})
+    public String addNewResource(Model model,@ModelAttribute ResourcesDto newResources)
+    {
+        List<Resources> resourcesList=resourcesRepository.findAll();
+        int nr=resourcesList.size()+1;
+        newResources.setName("Resource "+nr);
+        resourcesRepository.save(ResoucesConverter.of(newResources));
+        List<Users> list = userService.findAll("ROLE_USER");
+        model.addAttribute("users", list);
+        return "adminPage";
+    }
 
     @RequestMapping(path = {"/edit", "/edit/{id}"})
     public String editUserRoleById(Model model, @PathVariable("id") Optional<Long> id)
@@ -78,7 +158,7 @@ public class AdminController {
         List<String> resources=new ArrayList<>();
         if (id.isPresent()) {
             Users entity = userService.getUserById(id.get());
-            System.out.println(entity);
+           // System.out.println(entity);
             model.addAttribute("user", entity);
             List<Role> roles=roleRepository.findAll();
             Set<Role> roleSet=new HashSet<>();
