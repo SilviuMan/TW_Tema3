@@ -1,5 +1,7 @@
 package com.example.Tema_3.controllers;
 
+import com.example.Tema_3.controllers.dto.RoleDto;
+import com.example.Tema_3.controllers.dto.convertor.RoleConvertor;
 import com.example.Tema_3.models.*;
 import com.example.Tema_3.repository.*;
 import com.example.Tema_3.service.UserService;
@@ -20,17 +22,6 @@ public class MainController {
     private UserService userService;
     @Autowired
     private UsersRepository usersRepository;
-    @Autowired
-    private ResourcesRightsRepository resourcesRightsService;
-    @Autowired
-    private ResourceRightsRoleRepository resourceRightsRoleRepository;
-    @Autowired
-    private ResourcesRepository resourcesRepository;
-    @Autowired
-    private RoleRepository roleRepository ;
-    @Autowired
-    private RightsRepository rightsRepository;
-
 
     @GetMapping("/")
     public String root() {
@@ -44,8 +35,9 @@ public class MainController {
         List<String> right=new ArrayList<>();
         List<String> resources=new ArrayList<>();
         model.addAttribute("user", user);
-        model.addAttribute("roles", user.getRole());
-        for (Role role:user.getRole()
+        Set<RoleDto> roleSet= RoleConvertor.off(user.getRole());
+        model.addAttribute("roles", roleSet);
+        for (RoleDto role:roleSet
         ) {
             String rights="";
             String resource="";
@@ -78,7 +70,6 @@ public class MainController {
     public String admin(Model model) {
         List<Users> list = userService.findAll("ROLE_USER");
         model.addAttribute("users", list);
-
         return "adminPage";
     }
 

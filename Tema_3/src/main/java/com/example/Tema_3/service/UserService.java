@@ -2,7 +2,6 @@ package com.example.Tema_3.service;
 
 
 import com.example.Tema_3.controllers.dto.UserRegistrationDto;
-import com.example.Tema_3.models.ResourcesRights;
 import com.example.Tema_3.models.Users;
 import org.springframework.security.core.userdetails.UserDetailsService;
 

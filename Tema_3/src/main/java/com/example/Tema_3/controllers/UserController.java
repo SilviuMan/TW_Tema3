@@ -26,10 +26,6 @@ public class UserController {
     @Autowired
     private UsersRepository usersRepository;
     @Autowired
-    private ResourcesRightsRepository resourcesRightsService;
-    @Autowired
-    private ResourceRightsRoleRepository resourceRightsRoleRepository;
-    @Autowired
     private ResourcesRepository resourcesRepository;
     @Autowired
     private RoleRepository roleRepository ;
@@ -43,31 +39,7 @@ public class UserController {
         Users entity = usersRepository.findUsersByUsername(auth.getName());
         model.addAttribute("user", userService.getUserById(entity.getId()));
         if(entity.getRole().contains(roleRepository.findRoleById(idRole))!=true) {
-            model.addAttribute("roles", entity.getRole());
-            List<String> right=new ArrayList<>();
-            List<String> resourcess=new ArrayList<>();
-            for (Role role : entity.getRole()
-            ) {
-                String rights = "";
-                String resource = "";
-                for (Rights rig : role.getRights()
-                ) {
-                    if (rights != "") {
-                        rights = rights + " + " + rig.getName();
-                    } else {
-                        rights = rig.getName();
-                    }
-                }
-                for (Resources res : role.getResources()
-                ) {
-                    resource = res.getName();
-                }
-                resourcess.add(resource);
-                right.add(rights);
-            }
-            model.addAttribute("resources", resourcess);
-            model.addAttribute("rights", right);
-            return "userPage";
+            return createEntity(model,entity);
         }
         Resources resources1= resStatic;
         resources1.setText("Resursa a fost creata");
@@ -81,68 +53,15 @@ public class UserController {
                 model.addAttribute("errorData", "Resursa nu a fost modificata");
                 ModelAndView modele = new ModelAndView("modifyResource");
                 modele.addObject("resources", new Resources());
-                model.addAttribute("roles", entity.getRole());
-                List<String> right = new ArrayList<>();
-                List<String> resourcess = new ArrayList<>();
-                for (Role role : entity.getRole()
-                ) {
-                    String rights = "";
-                    String resource = "";
-                    for (Rights rig : role.getRights()
-                    ) {
-                        if (rights != "") {
-                            rights = rights + " + " + rig.getName();
-                        } else {
-                            rights = rig.getName();
-                        }
-                    }
-                    for (Resources res : role.getResources()
-                    ) {
-                        resource = res.getName();
-                    }
-                    resourcess.add(resource);
-                    right.add(rights);
-                }
-
-                model.addAttribute("resources", resourcess);
-                model.addAttribute("rights", right);
-                return "userPage";
+                return createEntity(model,entity);
             }
-            // Resources verifRes=resourcesRepository.findResourcesById(resStatic.getId());
-            //System.out.println("Versiune dupa update in baza de date "+verifRes.getVersion());
-            // resources1=resourcesRepository.findResourcesById(idResursa);
         }
         else {
             model.addAttribute("errorData", "Resursa nu a fost modificata");
         }
         ModelAndView modele = new ModelAndView("modifyResource");
         modele.addObject("resources", new Resources());
-        model.addAttribute("roles", entity.getRole());
-        List<String> right=new ArrayList<>();
-        List<String> resourcess=new ArrayList<>();
-        for (Role role : entity.getRole()
-        ) {
-            String rights = "";
-            String resource = "";
-            for (Rights rig : role.getRights()
-            ) {
-                if (rights != "") {
-                    rights = rights + " + " + rig.getName();
-                } else {
-                    rights = rig.getName();
-                }
-            }
-            for (Resources res : role.getResources()
-            ) {
-                resource = res.getName();
-            }
-            resourcess.add(resource);
-            right.add(rights);
-        }
-
-        model.addAttribute("resources", resourcess);
-        model.addAttribute("rights", right);
-        return "userPage";
+        return createEntity(model,entity);
     }
 
     @RequestMapping(path = {"/deleteResource", "/deleteResource/{id}/{id2}/{id3}"})
@@ -151,31 +70,7 @@ public class UserController {
         Users entity = usersRepository.findUsersByUsername(auth.getName());
         model.addAttribute("user", userService.getUserById(entity.getId()));
         if(entity.getRole().contains(roleRepository.findRoleById(idRole))!=true) {
-            model.addAttribute("roles", entity.getRole());
-            List<String> right=new ArrayList<>();
-            List<String> resourcess=new ArrayList<>();
-            for (Role role : entity.getRole()
-            ) {
-                String rights = "";
-                String resource = "";
-                for (Rights rig : role.getRights()
-                ) {
-                    if (rights != "") {
-                        rights = rights + " + " + rig.getName();
-                    } else {
-                        rights = rig.getName();
-                    }
-                }
-                for (Resources res : role.getResources()
-                ) {
-                    resource = res.getName();
-                }
-                resourcess.add(resource);
-                right.add(rights);
-            }
-            model.addAttribute("resources", resourcess);
-            model.addAttribute("rights", right);
-            return "userPage";
+            return createEntity(model,entity);
         }
         Resources resources1= resStatic;
         resources1.setText(null);
@@ -189,68 +84,15 @@ public class UserController {
                 model.addAttribute("errorData", "Resursa nu a fost modificata");
                 ModelAndView modele = new ModelAndView("modifyResource");
                 modele.addObject("resources", new Resources());
-                model.addAttribute("roles", entity.getRole());
-                List<String> right = new ArrayList<>();
-                List<String> resourcess = new ArrayList<>();
-                for (Role role : entity.getRole()
-                ) {
-                    String rights = "";
-                    String resource = "";
-                    for (Rights rig : role.getRights()
-                    ) {
-                        if (rights != "") {
-                            rights = rights + " + " + rig.getName();
-                        } else {
-                            rights = rig.getName();
-                        }
-                    }
-                    for (Resources res : role.getResources()
-                    ) {
-                        resource = res.getName();
-                    }
-                    resourcess.add(resource);
-                    right.add(rights);
-                }
-
-                model.addAttribute("resources", resourcess);
-                model.addAttribute("rights", right);
-                return "userPage";
+                return createEntity(model,entity);
             }
-            // Resources verifRes=resourcesRepository.findResourcesById(resStatic.getId());
-            //System.out.println("Versiune dupa update in baza de date "+verifRes.getVersion());
-            // resources1=resourcesRepository.findResourcesById(idResursa);
         }
         else {
             model.addAttribute("errorData", "Resursa nu a fost modificata");
         }
         ModelAndView modele = new ModelAndView("modifyResource");
         modele.addObject("resources", new Resources());
-        model.addAttribute("roles", entity.getRole());
-        List<String> right=new ArrayList<>();
-        List<String> resourcess=new ArrayList<>();
-        for (Role role : entity.getRole()
-        ) {
-            String rights = "";
-            String resource = "";
-            for (Rights rig : role.getRights()
-            ) {
-                if (rights != "") {
-                    rights = rights + " + " + rig.getName();
-                } else {
-                    rights = rig.getName();
-                }
-            }
-            for (Resources res : role.getResources()
-            ) {
-                resource = res.getName();
-            }
-            resourcess.add(resource);
-            right.add(rights);
-        }
-
-        model.addAttribute("resources", resourcess);
-        model.addAttribute("rights", right);
-        return "userPage";
+        return createEntity(model,entity);
     }
 
     @RequestMapping(value = "/modifyResource/{id}/{id2}/{id3}", method = RequestMethod.GET)
@@ -259,38 +101,14 @@ public class UserController {
         model3.addObject("resources", new Resources());
         return model3;
     }
+
     @PostMapping(path = {"/modifyResource", "/modifyResource/{id}/{id2}/{id3}"})
     public String modifyResource(Model model,@ModelAttribute Resources resources, @PathVariable("id") Optional<Long> idUser,@PathVariable("id2") Long idRole,@PathVariable("id3") Long idResursa) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Users entity= usersRepository.findUsersByUsername(auth.getName());
         model.addAttribute("user", userService.getUserById(entity.getId()));
-
         if(entity.getRole().contains(roleRepository.findRoleById(idRole))!=true) {
-            model.addAttribute("roles", entity.getRole());
-            List<String> right=new ArrayList<>();
-            List<String> resourcess=new ArrayList<>();
-            for (Role role : entity.getRole()
-            ) {
-                String rights = "";
-                String resource = "";
-                for (Rights rig : role.getRights()
-                ) {
-                    if (rights != "") {
-                        rights = rights + " + " + rig.getName();
-                    } else {
-                        rights = rig.getName();
-                    }
-                }
-                for (Resources res : role.getResources()
-                ) {
-                    resource = res.getName();
-                }
-                resourcess.add(resource);
-                right.add(rights);
-            }
-            model.addAttribute("resources", resourcess);
-            model.addAttribute("rights", right);
-            return "userPage";
+            return createEntity(model,entity);
         }
         Resources resources1= resStatic;
         if(resources.getText()!=null || !resources.getText().equals("")) {
@@ -306,32 +124,7 @@ public class UserController {
                     model.addAttribute("errorData", "Resursa nu a fost modificata");
                     ModelAndView modele = new ModelAndView("modifyResource");
                     modele.addObject("resources", new Resources());
-                    model.addAttribute("roles", entity.getRole());
-                    List<String> right = new ArrayList<>();
-                    List<String> resourcess = new ArrayList<>();
-                    for (Role role : entity.getRole()
-                    ) {
-                        String rights = "";
-                        String resource = "";
-                        for (Rights rig : role.getRights()
-                        ) {
-                            if (rights != "") {
-                                rights = rights + " + " + rig.getName();
-                            } else {
-                                rights = rig.getName();
-                            }
-                        }
-                        for (Resources res : role.getResources()
-                        ) {
-                            resource = res.getName();
-                        }
-                        resourcess.add(resource);
-                        right.add(rights);
-                    }
-
-                    model.addAttribute("resources", resourcess);
-                    model.addAttribute("rights", right);
-                    return "userPage";
+                    return createEntity(model,entity);
                 }
             }
             else {
@@ -377,67 +170,17 @@ public class UserController {
         }
         ModelAndView modele = new ModelAndView("modifyResource");
         modele.addObject("resources", new Resources());
-        model.addAttribute("roles", entity.getRole());
-        List<String> right=new ArrayList<>();
-        List<String> resourcess=new ArrayList<>();
-        for (Role role : entity.getRole()
-        ) {
-            String rights = "";
-            String resource = "";
-            for (Rights rig : role.getRights()
-            ) {
-                if (rights != "") {
-                    rights = rights + " + " + rig.getName();
-                } else {
-                    rights = rig.getName();
-                }
-            }
-            for (Resources res : role.getResources()
-            ) {
-                resource = res.getName();
-            }
-            resourcess.add(resource);
-            right.add(rights);
-        }
-
-        model.addAttribute("resources", resourcess);
-        model.addAttribute("rights", right);
-        return "userPage";
+        return createEntity(model,entity);
     }
+
     @RequestMapping(path = {"/editResource", "/editResource/{id}/{id2}"})
     public String accesResourceByUserIdAndRoleId(Model model, @PathVariable("id") Optional<Long> idUser,@PathVariable("id2") Long idRole)
     {
-        List<String> right=new ArrayList<>();
-        List<String> resources=new ArrayList<>();
-        List<Long> roleId=new ArrayList<>();
         if (idUser.isPresent()) {
             Users entity = userService.getUserById(idUser.get());
-           // System.out.println(entity);
             model.addAttribute("user", entity);
             if(entity.getRole().contains(roleRepository.findRoleById(idRole))!=true) {
-                model.addAttribute("roles", entity.getRole());
-                for (Role role : entity.getRole()
-                ) {
-                    String rights = "";
-                    String resource = "";
-                    for (Rights rig : role.getRights()
-                    ) {
-                        if (rights != "") {
-                            rights = rights + " + " + rig.getName();
-                        } else {
-                            rights = rig.getName();
-                        }
-                    }
-                    for (Resources res : role.getResources()
-                    ) {
-                        resource = res.getName();
-                    }
-                    resources.add(resource);
-                    right.add(rights);
-                }
-                model.addAttribute("resources", resources);
-                model.addAttribute("rights", right);
-                return "userPage";
+                return createEntity(model,entity);
             }
             model.addAttribute("resources", new Resources());
             Role curentRole=roleRepository.findRoleById(idRole);
@@ -466,7 +209,6 @@ public class UserController {
                     model.addAttribute("readRole", resur.getText());
                 }
                 model.addAttribute("resourceId", resur);
-                System.out.println("Version is "+resur.getVersion());
                 resStatic=resur;
                 model.addAttribute("resourceModify",resur);
             }
@@ -493,5 +235,33 @@ public class UserController {
         }
         roleRepository.flush();
         return "resourcePage";
+    }
+
+    public String createEntity(Model model,Users entity){
+        model.addAttribute("roles", entity.getRole());
+        List<String> right=new ArrayList<>();
+        List<String> resourcess=new ArrayList<>();
+        for (Role role : entity.getRole()
+        ) {
+            String rights = "";
+            String resource = "";
+            for (Rights rig : role.getRights()
+            ) {
+                if (rights != "") {
+                    rights = rights + " + " + rig.getName();
+                } else {
+                    rights = rig.getName();
+                }
+            }
+            for (Resources res : role.getResources()
+            ) {
+                resource = res.getName();
+            }
+            resourcess.add(resource);
+            right.add(rights);
+        }
+        model.addAttribute("resources", resourcess);
+        model.addAttribute("rights", right);
+        return "userPage";
     }
 }

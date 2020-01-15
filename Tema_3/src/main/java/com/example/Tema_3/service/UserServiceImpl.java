@@ -1,8 +1,6 @@
 package com.example.Tema_3.service;
 
 import com.example.Tema_3.controllers.dto.UserRegistrationDto;
-import com.example.Tema_3.models.ResourcesRights;
-import com.example.Tema_3.models.Role;
 import com.example.Tema_3.models.Roles;
 import com.example.Tema_3.models.Users;
 import com.example.Tema_3.repository.UsersRepository;

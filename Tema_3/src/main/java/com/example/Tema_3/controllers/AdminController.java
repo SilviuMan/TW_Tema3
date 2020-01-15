@@ -22,10 +22,6 @@ public class AdminController {
     @Autowired
     private UsersRepository usersRepository;
     @Autowired
-    private ResourcesRightsRepository resourcesRightsService;
-    @Autowired
-    private ResourceRightsRoleRepository resourceRightsRoleRepository;
-    @Autowired
     private ResourcesRepository resourcesRepository;
     @Autowired
     private RoleRepository roleRepository ;
@@ -67,15 +63,11 @@ public class AdminController {
         ModelAndView model3 = new ModelAndView("addANewResource");
         model3.addObject("resources", new ResourcesDto());
         return model3;
-       // model.addAttribute("newResources",new Resources());
-        //return "addResource";
     }
     @RequestMapping(value = "/addANewRole", method = RequestMethod.GET)
     public String  getdataRole(Model model) throws IOException {
         model.addAttribute( "command", new FormCommand());
         return "addNewRole";
-        // model.addAttribute("newResources",new Resources());
-        //return "addResource";
     }
     @PostMapping(path = {"/addANewRole"})
     public String addNewResource(Model model,@ModelAttribute("command") FormCommand command)
@@ -90,12 +82,10 @@ public class AdminController {
         resources.add(resourcesRepository.findResourcesByName(command.getRadioButtonSelectedValue()));
         List<Role> roleList=roleRepository.findAll();
         int nr=roleList.size()+1;
-        System.out.println(nr);
         Role newRole=new Role((long) nr);
         newRole.setRights(rights);
         newRole.setResources(resources);
         roleRepository.save(newRole);
-        //System.out.println(command.getMultiCheckboxSelectedValues());
         List<Users> list = userService.findAll("ROLE_USER");
         model.addAttribute("users", list);
         return "adminPage";
@@ -117,34 +107,32 @@ public class AdminController {
     {
         List<String> right=new ArrayList<>();
         List<String> resources=new ArrayList<>();
-        List<Long> roleId=new ArrayList<>();
         if (id.isPresent()) {
             Users entity = userService.getUserById(id.get());
-            System.out.println(entity);
             model.addAttribute("user", entity);
-            Set<Role> roleSet=new HashSet<>();
-            model.addAttribute("roles", entity.getRole());
-            for (Role role:entity.getRole()
-            ) {
-                String rights="";
-                String resource="";
-                for (Rights rig: role.getRights()
-                ) {
-                    if(rights!="") {
-                        rights = rights + " + " + rig.getName();
-                    }else{
-                        rights=rig.getName();
-                    }
-                }
-                for (Resources res:role.getResources()
-                ) {
-                    resource=res.getName();
-                }
-                resources.add(resource);
-                right.add(rights);
-            }
-            model.addAttribute("resources", resources);
-            model.addAttribute("rights", right);
+            createDataUser(model,entity);
+//            model.addAttribute("roles", entity.getRole());
+//            for (Role role:entity.getRole()
+//            ) {
+//                String rights="";
+//                String resource="";
+//                for (Rights rig: role.getRights()
+//                ) {
+//                    if(rights!="") {
+//                        rights = rights + " + " + rig.getName();
+//                    }else{
+//                        rights=rig.getName();
+//                    }
+//                }
+//                for (Resources res:role.getResources()
+//                ) {
+//                    resource=res.getName();
+//                }
+//                resources.add(resource);
+//                right.add(rights);
+//            }
+//            model.addAttribute("resources", resources);
+//            model.addAttribute("rights", right);
         } else {
             model.addAttribute("user", new Users());
         }
@@ -158,7 +146,6 @@ public class AdminController {
         List<String> resources=new ArrayList<>();
         if (id.isPresent()) {
             Users entity = userService.getUserById(id.get());
-           // System.out.println(entity);
             model.addAttribute("user", entity);
             List<Role> roles=roleRepository.findAll();
             Set<Role> roleSet=new HashSet<>();
@@ -197,38 +184,38 @@ public class AdminController {
     @RequestMapping(path ={"/add", "/add/{id}/{id2}"} )
     public String addRoleToUserById(Model model, @PathVariable("id") Optional<Long> id,@PathVariable("id2") Long id2)
     {
-        List<String> right=new ArrayList<>();
-        List<String> resources=new ArrayList<>();
+        //List<String> right=new ArrayList<>();
+        //List<String> resources=new ArrayList<>();
         if (id.isPresent()) {
             Long idd=id.get();
             Users entity = userService.getUserById(id.get());
             Role roleDelete=roleRepository.findRoleById(id2);
             entity.getRole().add(roleDelete);
             usersRepository.save(entity);
-            model.addAttribute("user", entity);
-            model.addAttribute("roles", entity.getRole());
-
-            for (Role role:entity.getRole()
-            ) {
-                String rights="";
-                String resource="";
-                for (Rights rig: role.getRights()
-                ) {
-                    if(rights!="") {
-                        rights = rights + " + " + rig.getName();
-                    }else{
-                        rights=rig.getName();
-                    }
-                }
-                for (Resources res:role.getResources()
-                ) {
-                    resource=res.getName();
-                }
-                resources.add(resource);
-                right.add(rights);
-            }
-            model.addAttribute("resources", resources);
-            model.addAttribute("rights", right);
+            createDataUser(model,entity);
+//            model.addAttribute("user", entity);
+//            model.addAttribute("roles", entity.getRole());
+//            for (Role role:entity.getRole()
+//            ) {
+//                String rights="";
+//                String resource="";
+//                for (Rights rig: role.getRights()
+//                ) {
+//                    if(rights!="") {
+//                        rights = rights + " + " + rig.getName();
+//                    }else{
+//                        rights=rig.getName();
+//                    }
+//                }
+//                for (Resources res:role.getResources()
+//                ) {
+//                    resource=res.getName();
+//                }
+//                resources.add(resource);
+//                right.add(rights);
+//            }
+//            model.addAttribute("resources", resources);
+//            model.addAttribute("rights", right);
         } else {
             model.addAttribute("user", new Users());
         }
@@ -238,41 +225,68 @@ public class AdminController {
     @RequestMapping(path = "/delete/{id}/{id2}")
     public String deleteRoleUserById(Model model, @PathVariable("id") Optional<Long> id,@PathVariable("id2") Long id2)
     {
-        List<String> right=new ArrayList<>();
-
-        List<String> resources=new ArrayList<>();
+        //List<String> right=new ArrayList<>();
+       // List<String> resources=new ArrayList<>();
         if (id.isPresent()) {
             Long idd=id.get();
             Users entity = userService.getUserById(id.get());
             Role roleDelete=roleRepository.findRoleById(id2);
             entity.getRole().remove(roleDelete);
             usersRepository.save(entity);
-            model.addAttribute("user", entity);
-            model.addAttribute("roles", entity.getRole());
-            for (Role role:entity.getRole()
-            ) {
-                String rights="";
-                String resource="";
-                for (Rights rig: role.getRights()
-                ) {
-                    if(rights!="") {
-                        rights = rights + " + " + rig.getName();
-                    }else{
-                        rights=rig.getName();
-                    }
-                }
-                for (Resources res:role.getResources()
-                ) {
-                    resource=res.getName();
-                }
-                resources.add(resource);
-                right.add(rights);
-            }
-            model.addAttribute("resources", resources);
-            model.addAttribute("rights", right);
+            createDataUser(model,entity);
+//            model.addAttribute("user", entity);
+//            model.addAttribute("roles", entity.getRole());
+//            for (Role role:entity.getRole()
+//            ) {
+//                String rights="";
+//                String resource="";
+//                for (Rights rig: role.getRights()
+//                ) {
+//                    if(rights!="") {
+//                        rights = rights + " + " + rig.getName();
+//                    }else{
+//                        rights=rig.getName();
+//                    }
+//                }
+//                for (Resources res:role.getResources()
+//                ) {
+//                    resource=res.getName();
+//                }
+//                resources.add(resource);
+//                right.add(rights);
+//            }
+//            model.addAttribute("resources", resources);
+//            model.addAttribute("rights", right);
         } else {
             model.addAttribute("user", new Users());
         }
         return "edit-user";
+    }
+    public void createDataUser(Model model,Users entity){
+        List<String> right=new ArrayList<>();
+        List<String> resources=new ArrayList<>();
+        model.addAttribute("user", entity);
+        model.addAttribute("roles", entity.getRole());
+        for (Role role:entity.getRole()
+        ) {
+            String rights="";
+            String resource="";
+            for (Rights rig: role.getRights()
+            ) {
+                if(rights!="") {
+                    rights = rights + " + " + rig.getName();
+                }else{
+                    rights=rig.getName();
+                }
+            }
+            for (Resources res:role.getResources()
+            ) {
+                resource=res.getName();
+            }
+            resources.add(resource);
+            right.add(rights);
+        }
+        model.addAttribute("resources", resources);
+        model.addAttribute("rights", right);
     }
 }
