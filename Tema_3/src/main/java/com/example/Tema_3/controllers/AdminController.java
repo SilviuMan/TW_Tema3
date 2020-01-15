@@ -74,6 +74,12 @@ public class AdminController {
     {
         String[] strings=command.getMultiCheckboxSelectedValues();
         Set<Rights> rights=new HashSet<>();
+        if(command.getRadioButtonSelectedValue()==null ||command.getMultiCheckboxSelectedValues()==null||command.getRadioButtonSelectedValue().isEmpty() ||command.getMultiCheckboxSelectedValues().length==0  )
+        {
+            model.addAttribute("errorData","Trebuie sa selectezi un Drept si o Resursa");
+            model.addAttribute( "command", new FormCommand());
+            return "addNewRole";
+        }
         for (String st: strings
              ) {
             rights.add(rightsRepository.findRightsByName(st));
