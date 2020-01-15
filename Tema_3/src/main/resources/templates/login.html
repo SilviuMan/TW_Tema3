@@ -4,72 +4,59 @@
 <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
 <link rel="stylesheet" type="text/css"
 	th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
 
 <title>Registration</title>
 </head>
-<body style="background: linear-gradient(to bottom, #33ccff 0%, #ff99cc 100%)fixed;">
-<!--	<nav class="navbar navbar-inverse navbar-fixed-top">-->
-<!--		<div class="container">-->
-<!--			<div class="navbar-header">-->
-<!--				<button type="button" class="navbar-toggle collapsed"-->
-<!--					data-toggle="collapse" data-target="#navbar" aria-expanded="false"-->
-<!--					aria-controls="navbar">-->
-<!--					<span class="sr-only">Toggle navigation</span> <span-->
-<!--						class="icon-bar"></span> <span class="icon-bar"></span> <span-->
-<!--						class="icon-bar"></span>-->
-<!--				</button>-->
-<!--				<a class="navbar-brand" href="#" th:href="@{/}">Registration and-->
-<!--					Login Module</a>-->
-<!--			</div>-->
-<!--		</div>-->
-<!--	</nav>-->
+<body style="background: linear-gradient(to bottom left, #cc00ff 13%, #3366ff 100%)fixed;">
 	<br>
 	<br>
 	<br>
 	<br>
-	<div style="width: 500px; background: whitesmoke" class="container p-3 mb-2 bg-secondary my-2">
-
-		<div class="row">
-			<div class="col-md-12 min-vh-100 d-flex flex-column justify-content-center">
-				<h1>Login page</h1>
-				<form th:action="@{/login}" method="post">
-					<div th:if="${param.error}">
-						<div class="alert alert-danger">Invalid username or
-							password.</div>
-					</div>
-					<div th:if="${param.logout}">
-						<div class="alert alert-info">You have been logged out.</div>
-					</div>
-					<div class="form-group">
-						<label for="username">Username</label>: <input type="text"
-							id="username" name="username" class="form-control"
-							autofocus="autofocus" placeholder="Username" />
-					</div>
-					<div class="form-group">
-						<label for="password">Password</label>: <input type="password"
-							id="password" name="password" class="form-control"
-							placeholder="Password" />
-					</div>
-					<div class="form-group">
-						<div class="row">
-							<div class="col-sm-6 col-sm-offset-3">
-								<input type="submit" name="login-submit" id="login-submit"
-									class="form-control btn btn-primary" value="Log In" />
+	<div style="width: 500px; " class="container p-3 mb-2 my-2 ">
+		<div class="card shadow-lg p-3 mb-5 bg-white rounded">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-md-12 min-vh-100 d-flex flex-column justify-content-center">
+						<h1>Login page</h1>
+						<form th:action="@{/login}" method="post">
+							<div th:if="${param.error}">
+								<div class="alert alert-danger">Invalid username or
+									password.</div>
 							</div>
-						</div>
+							<div th:if="${param.logout}">
+								<div class="alert alert-info">You have been logged out.</div>
+							</div>
+							<div class="form-group">
+								<label for="username">Username</label>: <input type="text"
+									id="username" name="username" class="form-control"
+									autofocus="autofocus" placeholder="Username" />
+							</div>
+							<div class="form-group">
+								<label for="password">Password</label>: <input type="password"
+									id="password" name="password" class="form-control"
+									placeholder="Password" />
+							</div>
+							<div class="form-group">
+								<div class="row">
+									<div class="col-sm-6 col-sm-offset-3">
+										<input type="submit" name="login-submit" id="login-submit"
+											class="form-control btn btn-primary" value="Log In" />
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<span>New user? <a href="/" th:href="@{/registration}">Register
+										here</a></span>
+							</div>
+						</form>
 					</div>
-					<div class="form-group">
-						<span>New user? <a href="/" th:href="@{/registration}">Register
-								here</a></span>
-					</div>
-				</form>
+				</div>
 			</div>
 		</div>
-
-
 	</div>
 
 	<script type="text/javascript"

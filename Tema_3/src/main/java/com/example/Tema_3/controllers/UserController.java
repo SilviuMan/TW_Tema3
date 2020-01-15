@@ -111,7 +111,7 @@ public class UserController {
             return createEntity(model,entity);
         }
         Resources resources1= resStatic;
-        if(resources.getText()!=null || !resources.getText().equals("")) {
+        if(resources.getText()!=null && resources.getText().isEmpty()!=true) {
             resources1.setText(resources.getText());
             Resources verifRes = resourcesRepository.findResourcesById(resStatic.getId());
 
